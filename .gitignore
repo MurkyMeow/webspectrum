@@ -1,0 +1,5 @@
+.cache
+node_modules
+dist
+object
+wasi-sdk-12.0
