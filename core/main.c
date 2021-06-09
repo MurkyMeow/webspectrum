@@ -1,4 +1,4 @@
-#include "stdlib.h"
+#include <stdlib.h>
 
 // exported to js
 void* c_allocate(int amount) {
