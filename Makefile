@@ -19,7 +19,9 @@ SOURCE_DIR = core
 
 OUTPUT = $(OUT_DIR)/core.wasm
 
-OBJECTS = $(OBJECTS_DIR)/test.o
+OBJECTS = $(OBJECTS_DIR)/main.o \
+	$(OBJECTS_DIR)/wav.o \
+	$(OBJECTS_DIR)/dft.o
 
 build: $(WASI_SDK_PATH) $(OUT_DIR) $(OBJECTS_DIR) $(OUTPUT)
 
