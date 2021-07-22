@@ -9,6 +9,9 @@ npm i
 # compile .c and .ts files
 make
 
-# run development server
+# watch changes
+watch make
+
+# run web server
 npm run dev
 ```

@@ -23,9 +23,8 @@ OBJECTS = $(CACHE_DIR)/main.o \
 	$(CACHE_DIR)/dft.o
 
 JAVASCRIPT = $(OUT_DIR)/index.js
-INDEX_HTML = $(OUT_DIR)/index.html
 
-build: $(WASI_SDK) $(OUT_DIR) $(CACHE_DIR) $(JAVASCRIPT) $(OUTPUT) $(INDEX_HTML)
+build: $(WASI_SDK) $(OUT_DIR) $(CACHE_DIR) $(JAVASCRIPT) $(OUTPUT)
 
 $(WASI_SDK):
 	wget https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-12/wasi-sdk-12.0-linux.tar.gz
@@ -37,9 +36,6 @@ $(OUT_DIR):
 
 $(CACHE_DIR):
 	mkdir $(CACHE_DIR)
-
-$(INDEX_HTML): web/index.html
-	cp web/index.html $(INDEX_HTML)
 
 $(OUTPUT): $(OBJECTS)
 	$(CC) $(BUILD_FLAGS) $(OBJECTS) -o $(OUTPUT)
