@@ -1,3 +1,5 @@
+import { spectrum_create } from './spectrum';
+
 interface Core extends WebAssembly.Exports {
   memory: WebAssembly.Memory;
   c_allocate: (amount: number) => number;
@@ -48,6 +50,18 @@ function main(core: Core) {
       const frequencies = new Float32Array(c_memory, frequencies_ptr, sample_count);
 
       dft(frequencies_ptr, samples_ptr, sample_count);
+
+      const spectrum = spectrum_create({
+        max_freq: sample_count / 2,
+        max_time: sample_count / 2,
+      });
+      const spectrum_data = new Uint8Array(sample_count * sample_count);
+      for (let i = 0; i < sample_count; i += 2) {
+        spectrum_data[i] = i;
+        spectrum_data[i + 1] = frequencies[i];
+      }
+      spectrum.draw(spectrum_data);
+      document.body.appendChild(spectrum.canvas);
 
       console.log(frequencies);
     });
