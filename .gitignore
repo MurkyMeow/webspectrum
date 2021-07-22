@@ -1,5 +1,5 @@
 .cache
 node_modules
 dist
-object
+cache
 wasi-sdk-12.0

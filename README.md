@@ -6,9 +6,12 @@ Run from scratch:
 # install nodejs dependencies
 npm i
 
-# compile .c files
+# compile .c and .ts files
 make
 
-# run development server
+# watch changes
+watch make
+
+# run web server
 npm run dev
 ```
