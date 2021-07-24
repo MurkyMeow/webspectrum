@@ -50,19 +50,31 @@ function main(core: Core) {
       const frequencies = new Float32Array(c_memory, frequencies_ptr, sample_count);
 
       dft(frequencies_ptr, samples_ptr, sample_count);
+      console.log(frequencies);
+
+      const time_samples = 1024;
 
       const spectrum = spectrum_create({
-        max_freq: sample_count / 2,
-        max_time: sample_count / 2,
+        max_freq: sample_count,
+        max_time: time_samples,
       });
-      const spectrum_data = new Uint8Array(sample_count * sample_count);
-      for (let i = 0; i < sample_count; i += 2) {
-        spectrum_data[i] = i;
-        spectrum_data[i + 1] = frequencies[i];
-      }
-      spectrum.draw(spectrum_data);
-      document.body.appendChild(spectrum.canvas);
 
-      console.log(frequencies);
+      const spectrum_data = new Uint8Array(sample_count * time_samples * 3);
+
+      for (let i = 0; i < sample_count; i += 1) {
+        const sample = frequencies[i];
+
+        const offset = i * time_samples * 3;
+
+        for (let j = 0; j < time_samples * 3; j += 3) {
+          spectrum_data[offset + j + 0] = sample;
+          spectrum_data[offset + j + 1] = sample;
+          spectrum_data[offset + j + 2] = 0;
+        }
+      }
+
+      spectrum.draw(spectrum_data);
+
+      document.body.appendChild(spectrum.canvas);
     });
 }
