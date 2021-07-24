@@ -32,7 +32,8 @@ function main(core: Core) {
     dft,
   } = core;
 
-  fetch('/static/200hz.wav')
+  fetch('/static/50hz_100hz_150hz_200hz.wav')
+    // fetch('/static/200hz.wav')
     .then((res) => res.arrayBuffer())
     .then((file_buf) => {
       const file_size = file_buf.byteLength;
@@ -41,8 +42,7 @@ function main(core: Core) {
       const file_array = new Uint8Array(c_memory, file_ptr, file_size);
       file_array.set(new Uint8Array(file_buf));
 
-      // const sample_count = wav_get_sample_count(file_ptr);
-      const sample_count = 1024;
+      const sample_count = 2048;
       const bits_per_sample = wav_get_bits_per_sample(file_ptr);
       const samples_ptr = wav_get_samples(file_ptr);
 
@@ -52,21 +52,20 @@ function main(core: Core) {
       dft(frequencies_ptr, samples_ptr, sample_count);
       console.log(frequencies);
 
-      const time_samples = 1024;
+      const max_freq = sample_count;
+      const max_time = 1024;
+      const color_components = 3;
 
-      const spectrum = spectrum_create({
-        max_freq: sample_count,
-        max_time: time_samples,
-      });
+      const spectrum = spectrum_create({ max_freq, max_time });
 
-      const spectrum_data = new Uint8Array(sample_count * time_samples * 3);
+      const spectrum_data = new Uint8Array(max_freq * max_time * color_components);
 
       for (let i = 0; i < sample_count; i += 1) {
         const sample = frequencies[i];
 
-        const offset = i * time_samples * 3;
+        const offset = i * max_time * color_components;
 
-        for (let j = 0; j < time_samples * 3; j += 3) {
+        for (let j = 0; j < max_time * color_components; j += color_components) {
           spectrum_data[offset + j + 0] = sample;
           spectrum_data[offset + j + 1] = sample;
           spectrum_data[offset + j + 2] = 0;
